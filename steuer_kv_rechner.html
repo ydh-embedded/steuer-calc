@@ -159,8 +159,14 @@
                 </div>
                 
                 <div class="form-group">
+                    <label for="umsatz">Jahresumsatz (€)</label>
+                    <input type="number" id="umsatz" value="80000" min="0" step="100">
+                </div>
+                
+                <div class="form-group">
                     <label for="bundesland">Bundesland</label>
                     <select id="bundesland">
+                        <option value="thueringen" selected>Thüringen</option>
                         <option value="sachsen">Sachsen</option>
                         <option value="bayern">Bayern</option>
                         <option value="bw">Baden-Württemberg</option>
@@ -191,15 +197,34 @@
                     <input type="number" id="zusatzbeitrag" value="1.7" min="0" max="5" step="0.1">
                 </div>
             </div>
+            
+            <div style="text-align: center; margin-top: 20px;">
+                <button id="calculateBtn" onclick="calculate()" style="
+                    background: linear-gradient(135deg, #667eea, #764ba2);
+                    color: white;
+                    border: none;
+                    padding: 15px 40px;
+                    font-size: 18px;
+                    font-weight: bold;
+                    border-radius: 10px;
+                    cursor: pointer;
+                    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+                    transition: all 0.3s ease;
+                " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 25px rgba(102, 126, 234, 0.4)'" 
+                   onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 5px 15px rgba(102, 126, 234, 0.3)'">
+                    🧮 Berechnen
+                </button>
+            </div>
         </div>
         
-        <div class="results-section" id="results">
+        <div class="results-section" id="results" style="display: none;">
             <!-- Results will be populated here -->
         </div>
         
         <div class="note">
-            <strong>Hinweis:</strong> Diese Berechnung basiert auf den aktuellen Steuersätzen und Beitragssätzen für 2025. 
-            Die Werte sind Näherungswerte und ersetzen keine professionelle Steuerberatung. 
+            <strong>Hinweis:</strong> Diese Berechnung basiert auf den aktuellen Thüringer Steuersätzen und Beitragssätzen für 2025. 
+            Berücksichtigt werden: Gewerbesteuer mit durchschnittlichem Hebesatz von 380% für Thüringen, Kirchensteuer von 9%, 
+            Kleinunternehmerregelung bei Umsatz unter 22.000€. Die Werte sind Näherungswerte und ersetzen keine professionelle Steuerberatung. 
             Individuelle Umstände können zu Abweichungen führen.
         </div>
     </div>
@@ -214,6 +239,7 @@
         
         function calculate() {
             const jahresgewinn = parseFloat(document.getElementById('jahresgewinn').value) || 0;
+            const umsatz = parseFloat(document.getElementById('umsatz').value) || 0;
             const familienstand = document.getElementById('familienstand').value;
             const kirchensteuerpflichtig = document.getElementById('kirchensteuer').value === 'ja';
             const bundesland = document.getElementById('bundesland').value;
@@ -221,6 +247,12 @@
             const alter = parseInt(document.getElementById('alter').value) || 35;
             const kinder = parseInt(document.getElementById('kinder').value) || 0;
             const zusatzbeitrag = parseFloat(document.getElementById('zusatzbeitrag').value) || 1.7;
+            
+            // Umsatzsteuer berechnen
+            let umsatzsteuer = 0;
+            if (umsatz > 22000) { // Kleinunternehmerregelung
+                umsatzsteuer = umsatz * 0.19; // 19% Umsatzsteuer
+            }
             
             // Grundfreibetrag 2025
             const grundfreibetrag = familienstand === 'verheiratet' ? 22364 : 11184;
@@ -230,7 +262,7 @@
             if (jahresgewinn > 24500) {
                 const gewerbeertrag = jahresgewinn - 24500;
                 const gewerbeertragssteuer = gewerbeertrag * 0.035; // 3,5%
-                gewerbesteuer = gewerbeertragssteuer * 3.5; // Hebesatz 350%
+                gewerbesteuer = gewerbeertragssteuer * 3.8; // Hebesatz 380% für Thüringen
             }
             
             // Zu versteuerndes Einkommen
@@ -250,6 +282,8 @@
                     einkommensteuer = zvE * 0.45 - 18936;
                 }
             }
+            
+            einkommensteuer = Math.max(0, einkommensteuer);
             
             // Solidaritätszuschlag
             const soli = einkommensteuer > 18130 ? einkommensteuer * 0.055 : 0;
@@ -276,7 +310,7 @@
             } else {
                 // Private KV (Schätzung)
                 krankenversicherungsbeitrag = alter < 30 ? 4800 : (alter < 50 ? 6000 : 7200);
-                pflegeversicherungsbeitrag = krankenversicherungsBeitrag * 0.1;
+                pflegeversicherungsbeitrag = krankenversicherungsbeitrag * 0.1;
             }
             
             // Rentenversicherung (freiwillig für Selbständige)
@@ -284,13 +318,15 @@
             
             // Gesamtbelastung
             const gesamtsteuern = einkommensteuer + soli + kirchensteuer + gewerbesteuer;
-            const gesamtsozialversicherung = krankenversicherungsbeitrag + pflegeversicherungsBeitrag + rentenversicherung;
+            const gesamtsozialversicherung = krankenversicherungsbeitrag + pflegeversicherungsbeitrag + rentenversicherung;
             const gesamtbelastung = gesamtsteuern + gesamtsozialversicherung;
             const nettogewinn = jahresgewinn - gesamtbelastung;
             
             // Ergebnisse anzeigen
             displayResults({
                 jahresgewinn,
+                umsatz,
+                umsatzsteuer,
                 gewerbesteuer,
                 einkommensteuer,
                 soli,
@@ -309,68 +345,104 @@
         function displayResults(results) {
             const resultsContainer = document.getElementById('results');
             
+            // Ergebnisse anzeigen
+            resultsContainer.style.display = 'block';
+            
             resultsContainer.innerHTML = `
                 <div class="result-card">
-                    <h3>💼 Steuern</h3>
-                    <div class="result-item">
-                        <span>Gewerbesteuer:</span>
-                        <span class="amount">${formatCurrency(results.gewerbesteuer)}</span>
-                    </div>
-                    <div class="result-item">
-                        <span>Einkommensteuer:</span>
-                        <span class="amount">${formatCurrency(results.einkommensteuer)}</span>
-                    </div>
-                    <div class="result-item">
-                        <span>Solidaritätszuschlag:</span>
-                        <span class="amount">${formatCurrency(results.soli)}</span>
-                    </div>
-                    <div class="result-item">
-                        <span>Kirchensteuer:</span>
-                        <span class="amount">${formatCurrency(results.kirchensteuer)}</span>
-                    </div>
-                    <div class="result-item">
-                        <span>Steuern gesamt:</span>
-                        <span class="amount">${formatCurrency(results.gesamtsteuern)}</span>
-                    </div>
-                </div>
-                
-                <div class="result-card">
-                    <h3>🏥 Sozialversicherung</h3>
-                    <div class="result-item">
-                        <span>Krankenversicherung:</span>
-                        <span class="amount">${formatCurrency(results.krankenversicherungsbeitrag)}</span>
-                    </div>
-                    <div class="result-item">
-                        <span>Pflegeversicherung:</span>
-                        <span class="amount">${formatCurrency(results.pflegeversicherungsbeitrag)}</span>
-                    </div>
-                    <div class="result-item">
-                        <span>Rentenversicherung:</span>
-                        <span class="amount">${formatCurrency(results.rentenversicherung)}</span>
-                    </div>
-                    <div class="result-item">
-                        <span>Sozialversicherung gesamt:</span>
-                        <span class="amount">${formatCurrency(results.gesamtsozialversicherung)}</span>
+                    <h3>📊 Steuer- und Abgabenübersicht</h3>
+                    <div style="overflow-x: auto;">
+                        <table style="
+                            width: 100%;
+                            border-collapse: collapse;
+                            margin-top: 15px;
+                            background: rgba(255,255,255,0.1);
+                            border-radius: 8px;
+                            overflow: hidden;
+                        ">
+                            <thead>
+                                <tr style="background: rgba(255,255,255,0.2);">
+                                    <th style="padding: 12px; text-align: left; color: white; font-weight: bold;">Abgabenart</th>
+                                    <th style="padding: 12px; text-align: right; color: white; font-weight: bold;">Betrag/Jahr</th>
+                                    <th style="padding: 12px; text-align: right; color: white; font-weight: bold;">Betrag/Monat</th>
+                                </tr>
+                            </thead>
+                            <tbody style="color: white;">
+                                <tr style="border-bottom: 1px solid rgba(255,255,255,0.1);">
+                                    <td style="padding: 10px;">Umsatzsteuer</td>
+                                    <td style="padding: 10px; text-align: right; font-weight: bold;">${formatCurrency(results.umsatzsteuer)}</td>
+                                    <td style="padding: 10px; text-align: right;">${formatCurrency(results.umsatzsteuer/12)}</td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid rgba(255,255,255,0.1);">
+                                    <td style="padding: 10px;">Gewerbesteuer</td>
+                                    <td style="padding: 10px; text-align: right; font-weight: bold;">${formatCurrency(results.gewerbesteuer)}</td>
+                                    <td style="padding: 10px; text-align: right;">${formatCurrency(results.gewerbesteuer/4)}</td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid rgba(255,255,255,0.1);">
+                                    <td style="padding: 10px;">Einkommensteuer</td>
+                                    <td style="padding: 10px; text-align: right; font-weight: bold;">${formatCurrency(results.einkommensteuer)}</td>
+                                    <td style="padding: 10px; text-align: right;">${formatCurrency(results.einkommensteuer/4)}</td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid rgba(255,255,255,0.1);">
+                                    <td style="padding: 10px;">Solidaritätszuschlag</td>
+                                    <td style="padding: 10px; text-align: right; font-weight: bold;">${formatCurrency(results.soli)}</td>
+                                    <td style="padding: 10px; text-align: right;">${formatCurrency(results.soli/4)}</td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid rgba(255,255,255,0.1);">
+                                    <td style="padding: 10px;">Kirchensteuer</td>
+                                    <td style="padding: 10px; text-align: right; font-weight: bold;">${formatCurrency(results.kirchensteuer)}</td>
+                                    <td style="padding: 10px; text-align: right;">${formatCurrency(results.kirchensteuer/4)}</td>
+                                </tr>
+                                <tr style="border-bottom: 2px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.1);">
+                                    <td style="padding: 10px; font-weight: bold;">Steuern gesamt</td>
+                                    <td style="padding: 10px; text-align: right; font-weight: bold; font-size: 1.1em;">${formatCurrency(results.gesamtsteuern)}</td>
+                                    <td style="padding: 10px; text-align: right; font-weight: bold;">${formatCurrency(results.gesamtsteuern/12)}</td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid rgba(255,255,255,0.1);">
+                                    <td style="padding: 10px;">Krankenversicherung</td>
+                                    <td style="padding: 10px; text-align: right; font-weight: bold;">${formatCurrency(results.krankenversicherungsbeitrag)}</td>
+                                    <td style="padding: 10px; text-align: right;">${formatCurrency(results.krankenversicherungsbeitrag/12)}</td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid rgba(255,255,255,0.1);">
+                                    <td style="padding: 10px;">Pflegeversicherung</td>
+                                    <td style="padding: 10px; text-align: right; font-weight: bold;">${formatCurrency(results.pflegeversicherungsbeitrag)}</td>
+                                    <td style="padding: 10px; text-align: right;">${formatCurrency(results.pflegeversicherungsbeitrag/12)}</td>
+                                </tr>
+                                <tr style="border-bottom: 2px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.1);">
+                                    <td style="padding: 10px; font-weight: bold;">Sozialversicherung gesamt</td>
+                                    <td style="padding: 10px; text-align: right; font-weight: bold; font-size: 1.1em;">${formatCurrency(results.gesamtsozialversicherung)}</td>
+                                    <td style="padding: 10px; text-align: right; font-weight: bold;">${formatCurrency(results.gesamtsozialversicherung/12)}</td>
+                                </tr>
+                                <tr style="background: rgba(255,255,255,0.2); font-size: 1.2em;">
+                                    <td style="padding: 15px; font-weight: bold;">GESAMTBELASTUNG</td>
+                                    <td style="padding: 15px; text-align: right; font-weight: bold; font-size: 1.3em;">${formatCurrency(results.gesamtbelastung)}</td>
+                                    <td style="padding: 15px; text-align: right; font-weight: bold;">${formatCurrency(results.gesamtbelastung/12)}</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
                 
                 <div class="result-card summary-card">
-                    <h3>📈 Zusammenfassung</h3>
-                    <div class="result-item">
-                        <span>Jahresgewinn (brutto):</span>
-                        <span class="amount">${formatCurrency(results.jahresgewinn)}</span>
-                    </div>
-                    <div class="result-item">
-                        <span>Gesamtbelastung:</span>
-                        <span class="amount">${formatCurrency(results.gesamtbelastung)}</span>
-                    </div>
-                    <div class="result-item">
-                        <span>Belastungsquote:</span>
-                        <span class="amount">${results.belastungsquote.toFixed(1)}%</span>
-                    </div>
-                    <div class="result-item">
-                        <span>Nettogewinn:</span>
-                        <span class="amount">${formatCurrency(results.nettogewinn)}</span>
+                    <h3>📈 Finanzieller Überblick</h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 15px;">
+                        <div style="text-align: center; padding: 15px; background: rgba(255,255,255,0.1); border-radius: 8px;">
+                            <div style="font-size: 0.9em; margin-bottom: 5px;">Jahresumsatz</div>
+                            <div style="font-size: 1.3em; font-weight: bold;">${formatCurrency(results.umsatz)}</div>
+                        </div>
+                        <div style="text-align: center; padding: 15px; background: rgba(255,255,255,0.1); border-radius: 8px;">
+                            <div style="font-size: 0.9em; margin-bottom: 5px;">Jahresgewinn</div>
+                            <div style="font-size: 1.3em; font-weight: bold;">${formatCurrency(results.jahresgewinn)}</div>
+                        </div>
+                        <div style="text-align: center; padding: 15px; background: rgba(255,255,255,0.1); border-radius: 8px;">
+                            <div style="font-size: 0.9em; margin-bottom: 5px;">Belastungsquote</div>
+                            <div style="font-size: 1.3em; font-weight: bold;">${results.belastungsquote.toFixed(1)}%</div>
+                        </div>
+                        <div style="text-align: center; padding: 15px; background: rgba(34, 197, 94, 0.3); border-radius: 8px; border: 2px solid rgba(34, 197, 94, 0.5);">
+                            <div style="font-size: 0.9em; margin-bottom: 5px;">Nettogewinn</div>
+                            <div style="font-size: 1.4em; font-weight: bold;">${formatCurrency(results.nettogewinn)}</div>
+                            <div style="font-size: 0.8em; margin-top: 5px;">≈ ${formatCurrency(results.nettogewinn/12)}/Monat</div>
+                        </div>
                     </div>
                 </div>
             `;
@@ -378,14 +450,8 @@
         
         // Event Listeners
         document.addEventListener('DOMContentLoaded', function() {
-            const inputs = document.querySelectorAll('input, select');
-            inputs.forEach(input => {
-                input.addEventListener('input', calculate);
-                input.addEventListener('change', calculate);
-            });
-            
-            // Initiale Berechnung
-            calculate();
+            // Initiale Berechnung nur beim Klick auf den Button
+            document.getElementById('results').style.display = 'none';
         });
     </script>
 </body>
