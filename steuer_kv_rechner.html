@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gewerbe Steuer- und Krankenversicherungsrechner</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.2em;
+        }
+        
+        .input-section {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            border-left: 5px solid #667eea;
+        }
+        
+        .input-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        label {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #34495e;
+        }
+        
+        input, select {
+            padding: 12px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .results-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+        }
+        
+        .result-card {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+        
+        .result-card h3 {
+            margin-top: 0;
+            font-size: 1.4em;
+            border-bottom: 2px solid rgba(255,255,255,0.3);
+            padding-bottom: 10px;
+        }
+        
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            margin: 12px 0;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        .result-item:last-child {
+            border-bottom: none;
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 2px solid rgba(255,255,255,0.3);
+        }
+        
+        .amount {
+            font-weight: bold;
+        }
+        
+        .summary-card {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            grid-column: 1 / -1;
+        }
+        
+        .note {
+            background: #fff3cd;
+            color: #856404;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            border-left: 4px solid #ffc107;
+        }
+        
+        @media (max-width: 768px) {
+            .input-group {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📊 Gewerbe Steuer- und Krankenversicherungsrechner</h1>
+        
+        <div class="input-section">
+            <h2>Eingabedaten</h2>
+            <div class="input-group">
+                <div class="form-group">
+                    <label for="jahresgewinn">Jahresgewinn (€)</label>
+                    <input type="number" id="jahresgewinn" value="50000" min="0" step="100">
+                </div>
+                
+                <div class="form-group">
+                    <label for="familienstand">Familienstand</label>
+                    <select id="familienstand">
+                        <option value="ledig">Ledig</option>
+                        <option value="verheiratet">Verheiratet</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="kirchensteuer">Kirchensteuerpflichtig</label>
+                    <select id="kirchensteuer">
+                        <option value="ja">Ja</option>
+                        <option value="nein">Nein</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="bundesland">Bundesland</label>
+                    <select id="bundesland">
+                        <option value="sachsen">Sachsen</option>
+                        <option value="bayern">Bayern</option>
+                        <option value="bw">Baden-Württemberg</option>
+                        <option value="andere">Andere</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="krankenversicherung">Krankenversicherung</label>
+                    <select id="krankenversicherung">
+                        <option value="gesetzlich">Gesetzlich</option>
+                        <option value="privat">Privat</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="alter">Alter</label>
+                    <input type="number" id="alter" value="35" min="18" max="100">
+                </div>
+                
+                <div class="form-group">
+                    <label for="kinder">Anzahl Kinder</label>
+                    <input type="number" id="kinder" value="0" min="0" max="10">
+                </div>
+                
+                <div class="form-group">
+                    <label for="zusatzbeitrag">KV-Zusatzbeitrag (%)</label>
+                    <input type="number" id="zusatzbeitrag" value="1.7" min="0" max="5" step="0.1">
+                </div>
+            </div>
+        </div>
+        
+        <div class="results-section" id="results">
+            <!-- Results will be populated here -->
+        </div>
+        
+        <div class="note">
+            <strong>Hinweis:</strong> Diese Berechnung basiert auf den aktuellen Steuersätzen und Beitragssätzen für 2025. 
+            Die Werte sind Näherungswerte und ersetzen keine professionelle Steuerberatung. 
+            Individuelle Umstände können zu Abweichungen führen.
+        </div>
+    </div>
+
+    <script>
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('de-DE', {
+                style: 'currency',
+                currency: 'EUR'
+            }).format(amount);
+        }
+        
+        function calculate() {
+            const jahresgewinn = parseFloat(document.getElementById('jahresgewinn').value) || 0;
+            const familienstand = document.getElementById('familienstand').value;
+            const kirchensteuerpflichtig = document.getElementById('kirchensteuer').value === 'ja';
+            const bundesland = document.getElementById('bundesland').value;
+            const krankenversicherung = document.getElementById('krankenversicherung').value;
+            const alter = parseInt(document.getElementById('alter').value) || 35;
+            const kinder = parseInt(document.getElementById('kinder').value) || 0;
+            const zusatzbeitrag = parseFloat(document.getElementById('zusatzbeitrag').value) || 1.7;
+            
+            // Grundfreibetrag 2025
+            const grundfreibetrag = familienstand === 'verheiratet' ? 22364 : 11184;
+            
+            // Gewerbesteuer
+            let gewerbesteuer = 0;
+            if (jahresgewinn > 24500) {
+                const gewerbeertrag = jahresgewinn - 24500;
+                const gewerbeertragssteuer = gewerbeertrag * 0.035; // 3,5%
+                gewerbesteuer = gewerbeertragssteuer * 3.5; // Hebesatz 350%
+            }
+            
+            // Zu versteuerndes Einkommen
+            const sonderausgaben = 36; // Pauschbetrag
+            const zvE = Math.max(0, jahresgewinn - gewerbesteuer * 1.2 - grundfreibetrag - sonderausgaben);
+            
+            // Einkommensteuer (vereinfacht)
+            let einkommensteuer = 0;
+            if (zvE > 0) {
+                if (zvE <= 17005) {
+                    einkommensteuer = (1088.67 * (zvE / 10000) + 1400) * (zvE / 10000);
+                } else if (zvE <= 66760) {
+                    einkommensteuer = (206.43 * (zvE / 10000) + 2397) * (zvE / 10000) + 1014;
+                } else if (zvE <= 277825) {
+                    einkommensteuer = zvE * 0.42 - 10602;
+                } else {
+                    einkommensteuer = zvE * 0.45 - 18936;
+                }
+            }
+            
+            // Solidaritätszuschlag
+            const soli = einkommensteuer > 18130 ? einkommensteuer * 0.055 : 0;
+            
+            // Kirchensteuer
+            let kirchensteuer = 0;
+            if (kirchensteuerpflichtig) {
+                const kirchensteuersatz = (bundesland === 'bayern' || bundesland === 'bw') ? 0.08 : 0.09;
+                kirchensteuer = einkommensteuer * kirchensteuersatz;
+            }
+            
+            // Krankenversicherung
+            let krankenversicherungsbeitrag = 0;
+            let pflegeversicherungsbeitrag = 0;
+            
+            if (krankenversicherung === 'gesetzlich') {
+                const beitragsbemessungsgrenze = 66600; // 2025
+                const bemessungsgrundlage = Math.min(jahresgewinn, beitragsbemessungsgrenze);
+                
+                krankenversicherungsbeitrag = bemessungsgrundlage * (0.146 + zusatzbeitrag / 100);
+                
+                const pflegesatz = (alter >= 23 && kinder === 0) ? 0.04 : 0.0305;
+                pflegeversicherungsbeitrag = bemessungsgrundlage * pflegesatz;
+            } else {
+                // Private KV (Schätzung)
+                krankenversicherungsbeitrag = alter < 30 ? 4800 : (alter < 50 ? 6000 : 7200);
+                pflegeversicherungsbeitrag = krankenversicherungsBeitrag * 0.1;
+            }
+            
+            // Rentenversicherung (freiwillig für Selbständige)
+            const rentenversicherung = 0; // Optional
+            
+            // Gesamtbelastung
+            const gesamtsteuern = einkommensteuer + soli + kirchensteuer + gewerbesteuer;
+            const gesamtsozialversicherung = krankenversicherungsbeitrag + pflegeversicherungsBeitrag + rentenversicherung;
+            const gesamtbelastung = gesamtsteuern + gesamtsozialversicherung;
+            const nettogewinn = jahresgewinn - gesamtbelastung;
+            
+            // Ergebnisse anzeigen
+            displayResults({
+                jahresgewinn,
+                gewerbesteuer,
+                einkommensteuer,
+                soli,
+                kirchensteuer,
+                gesamtsteuern,
+                krankenversicherungsbeitrag,
+                pflegeversicherungsbeitrag,
+                rentenversicherung,
+                gesamtsozialversicherung,
+                gesamtbelastung,
+                nettogewinn,
+                belastungsquote: (gesamtbelastung / jahresgewinn * 100)
+            });
+        }
+        
+        function displayResults(results) {
+            const resultsContainer = document.getElementById('results');
+            
+            resultsContainer.innerHTML = `
+                <div class="result-card">
+                    <h3>💼 Steuern</h3>
+                    <div class="result-item">
+                        <span>Gewerbesteuer:</span>
+                        <span class="amount">${formatCurrency(results.gewerbesteuer)}</span>
+                    </div>
+                    <div class="result-item">
+                        <span>Einkommensteuer:</span>
+                        <span class="amount">${formatCurrency(results.einkommensteuer)}</span>
+                    </div>
+                    <div class="result-item">
+                        <span>Solidaritätszuschlag:</span>
+                        <span class="amount">${formatCurrency(results.soli)}</span>
+                    </div>
+                    <div class="result-item">
+                        <span>Kirchensteuer:</span>
+                        <span class="amount">${formatCurrency(results.kirchensteuer)}</span>
+                    </div>
+                    <div class="result-item">
+                        <span>Steuern gesamt:</span>
+                        <span class="amount">${formatCurrency(results.gesamtsteuern)}</span>
+                    </div>
+                </div>
+                
+                <div class="result-card">
+                    <h3>🏥 Sozialversicherung</h3>
+                    <div class="result-item">
+                        <span>Krankenversicherung:</span>
+                        <span class="amount">${formatCurrency(results.krankenversicherungsbeitrag)}</span>
+                    </div>
+                    <div class="result-item">
+                        <span>Pflegeversicherung:</span>
+                        <span class="amount">${formatCurrency(results.pflegeversicherungsbeitrag)}</span>
+                    </div>
+                    <div class="result-item">
+                        <span>Rentenversicherung:</span>
+                        <span class="amount">${formatCurrency(results.rentenversicherung)}</span>
+                    </div>
+                    <div class="result-item">
+                        <span>Sozialversicherung gesamt:</span>
+                        <span class="amount">${formatCurrency(results.gesamtsozialversicherung)}</span>
+                    </div>
+                </div>
+                
+                <div class="result-card summary-card">
+                    <h3>📈 Zusammenfassung</h3>
+                    <div class="result-item">
+                        <span>Jahresgewinn (brutto):</span>
+                        <span class="amount">${formatCurrency(results.jahresgewinn)}</span>
+                    </div>
+                    <div class="result-item">
+                        <span>Gesamtbelastung:</span>
+                        <span class="amount">${formatCurrency(results.gesamtbelastung)}</span>
+                    </div>
+                    <div class="result-item">
+                        <span>Belastungsquote:</span>
+                        <span class="amount">${results.belastungsquote.toFixed(1)}%</span>
+                    </div>
+                    <div class="result-item">
+                        <span>Nettogewinn:</span>
+                        <span class="amount">${formatCurrency(results.nettogewinn)}</span>
+                    </div>
+                </div>
+            `;
+        }
+        
+        // Event Listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            const inputs = document.querySelectorAll('input, select');
+            inputs.forEach(input => {
+                input.addEventListener('input', calculate);
+                input.addEventListener('change', calculate);
+            });
+            
+            // Initiale Berechnung
+            calculate();
+        });
+    </script>
+</body>
+</html>
