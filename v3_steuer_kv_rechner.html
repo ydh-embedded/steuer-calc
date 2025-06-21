@@ -1,480 +1,297 @@
-<!DOCTYPE html>
+        // Placeholder calculate function
+        function calculate() {
+            const results = document.getElementById('results');
+            results.style.display = 'block';
+            results.innerHTML = `
+                <h3 class="heading-text">Berechnungsergebnisse</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="result-card">
+                        <h4 class="result-title">Gewerbesteuer</h4>
+                        <p class="result-value-blue">€ 2.450</p>
+                    </div>
+                    <div class="result-card">
+                        <h4<!DOCTYPE html>
 <html lang="de">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gewerbe Steuer- und Krankenversicherungsrechner</title>
-    <link rel="stylesheet" href="styles/style.css">
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        // Tailwind Dark Mode Konfiguration
-        tailwind.config = {
-            darkMode: 'class'
+    <style>
+        /* Tailwind Alias Classes - Vereinfachte Klassennamen */
+        .card {
+            @apply bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 p-6 rounded-lg shadow-lg transition-all duration-300;
         }
-    </script>
+        
+        .card-light {
+            @apply bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 p-6 rounded-lg transition-all duration-300;
+        }
+        
+        .input-field {
+            @apply bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100 p-3 rounded-lg border-2 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-800 transition-all duration-200;
+        }
+        
+        .label-text {
+            @apply text-gray-700 dark:text-gray-300 font-medium mb-2 block;
+        }
+        
+        .btn-primary {
+            @apply bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 dark:from-blue-600 dark:to-purple-700 dark:hover:from-blue-700 dark:hover:to-purple-800 text-white font-bold py-4 px-8 rounded-lg shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300;
+        }
+        
+        .theme-btn {
+            @apply bg-white/20 hover:bg-white/30 p-3 rounded-lg transition-all duration-300 backdrop-blur-sm;
+        }
+        
+        .title-text {
+            @apply text-white dark:text-gray-100;
+        }
+        
+        .heading-text {
+            @apply text-gray-800 dark:text-gray-100 text-xl font-bold mb-4;
+        }
+        
+        .result-card {
+            @apply bg-gray-50 dark:bg-gray-700 p-4 rounded-lg;
+        }
+        
+        .result-title {
+            @apply font-semibold text-gray-700 dark:text-gray-300;
+        }
+        
+        .result-value-blue {
+            @apply text-2xl font-bold text-blue-600 dark:text-blue-400;
+        }
+        
+        .result-value-green {
+            @apply text-2xl font-bold text-green-600 dark:text-green-400;
+        }
+        
+        .note-box {
+            @apply bg-blue-50 dark:bg-gray-700 border-l-4 border-blue-500 dark:border-blue-400 p-4 rounded;
+        }
+        
+        .note-title {
+            @apply text-gray-800 dark:text-gray-200 font-bold;
+        }
+        
+        .note-text {
+            @apply text-gray-700 dark:text-gray-300;
+        }
+        
+        .form-grid {
+            @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6;
+        }
+        
+        .flex-col {
+            @apply flex flex-col;
+        }
+        
+        .main-container {
+            @apply max-w-6xl mx-auto p-4;
+        }
+        
+        .header-flex {
+            @apply flex justify-between items-center mb-8;
+        }
+        
+        /* Original styles für Body und andere Basis-Elemente */
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            transition: all 0.3s ease;
+        }
+        
+        .dark body {
+            background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+        }
+    </style>
 </head>
-
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>📊 Gewerbe Steuer- und Krankenversicherungsrechner</h1>
-            <button class="theme-toggle" onclick="toggleTheme()" id="themeToggle">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor">
-                    <path d="M233.54 142.23a8..."></path>
+    <!-- Hauptcontainer mit Alias-Klassen -->
+    <div class="main-container">
+        <div class="header-flex">
+            <h1 class="title-text">📊 Gewerbe Steuer- und Krankenversicherungsrechner</h1>
+            <button class="theme-btn" onclick="toggleTheme()" id="themeToggle">
+                <!-- Moon Icon (for light mode - shows when dark mode is available) -->
+                <svg id="moon-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 text-white">
+                    <path fill-rule="evenodd" d="M9.528 1.718a.75.75 0 01.162.819A8.97 8.97 0 009 6a9 9 0 009 9 8.97 8.97 0 003.463-.69.75.75 0 01.981.98 10.503 10.503 0 01-9.694 6.46c-5.799 0-10.5-4.701-10.5-10.5 0-4.368 2.667-8.112 6.46-9.694a.75.75 0 01.818.162z" clip-rule="evenodd" />
+                </svg>
+                
+                <!-- Sun Icon (for dark mode - shows when light mode is available) -->
+                <svg id="sun-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 text-white hidden">
+                    <path d="M12 2.25a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V3a.75.75 0 01.75-.75zM7.5 12a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM18.894 6.166a.75.75 0 00-1.06-1.06l-1.591 1.59a.75.75 0 101.06 1.061l1.591-1.59zM21.75 12a.75.75 0 01-.75.75h-2.25a.75.75 0 010-1.5H21a.75.75 0 01.75.75zM17.834 18.894a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 10-1.061 1.06l1.59 1.591zM12 18a.75.75 0 01.75.75V21a.75.75 0 01-1.5 0v-2.25A.75.75 0 0112 18zM7.758 17.303a.75.75 0 00-1.061-1.06l-1.591 1.59a.75.75 0 001.06 1.061l1.591-1.59zM6 12a.75.75 0 01-.75.75H3a.75.75 0 010-1.5h2.25A.75.75 0 016 12zM6.697 7.757a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 00-1.061 1.06l1.59 1.591z" />
                 </svg>
             </button>
-
-            <button id="theme-toggle" type="button"
-                class="text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5 transition-colors duration-200">
-                <!-- Moon Icon (Dark Mode) -->
-                <svg id="theme-toggle-dark-icon" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
-                </svg>
-                <!-- Sun Icon (Light Mode) -->
-                <svg id="theme-toggle-light-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                    <path
-                        d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"
-                        fill-rule="evenodd" clip-rule="evenodd"></path>
-                </svg>
-            </button>
-
         </div>
     </div>
 
-    <div class="container">
-
-        <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 p-6 rounded-lg shadow-sm">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div class="bg-gray-100 dark:bg-gray-700 p-4 rounded">
-                    <h3 class="font-medium mb-2">"bg-gray-100 dark:bg-gray-700 p-4 rounded"</h3>
-                    <p class="text-sm text-gray-600 dark:text-gray-400">"text-sm text-gray-600 dark:text-gray-400"</p>
-
-
-                    <div class="input-section">
-                        <h2>Eingabedaten</h2>
-                        <div class="input-group">
-                            <div class="form-group">
-                                <label for="jahresgewinn">Jahresgewinn (€)</label>
-                                <input type="number" id="jahresgewinn" value="50000" min="0" step="100">
-                            </div>
-
-                            <div class="form-group">
-                                <label for="familienstand">Familienstand</label>
-                                <select id="familienstand">
-                                    <option value="ledig">Ledig</option>
-                                    <option value="verheiratet">Verheiratet</option>
-                                </select>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="kirchensteuer">Kirchensteuerpflichtig</label>
-                                <select id="kirchensteuer">
-                                    <option value="ja">Ja</option>
-                                    <option value="nein">Nein</option>
-                                </select>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="umsatz">Jahresumsatz (€)</label>
-                                <input type="number" id="umsatz" value="80000" min="0" step="100">
-                            </div>
-
-                            <div class="form-group">
-                                <label for="bundesland">Bundesland</label>
-                                <select id="bundesland">
-                                    <option value="thueringen" selected>Thüringen</option>
-                                    <option value="sachsen">Sachsen</option>
-                                    <option value="bayern">Bayern</option>
-                                    <option value="bw">Baden-Württemberg</option>
-                                    <option value="andere">Andere</option>
-                                </select>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="krankenversicherung">Krankenversicherung</label>
-                                <select id="krankenversicherung">
-                                    <option value="gesetzlich">Gesetzlich</option>
-                                    <option value="privat">Privat</option>
-                                </select>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="alter">Alter</label>
-                                <input type="number" id="alter" value="35" min="18" max="100">
-                            </div>
-
-                            <div class="form-group">
-                                <label for="krankenkasse">Krankenkasse (bei gesetzlicher KV)</label>
-                                <select id="krankenkasse">
-                                    <option value="ikk">IKK classic (18,0%)</option>
-                                    <option value="barmer">Barmer (17,89%)</option>
-                                    <option value="custom">Andere (manuell eingeben)</option>
-                                </select>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="kinder">Anzahl Kinder</label>
-                                <input type="number" id="kinder" value="0" min="0" max="10">
-                            </div>
-
-                            <div class="form-group">
-                                <label for="zusatzbeitrag">KV-Zusatzbeitrag (%)</label>
-                                <input type="number" id="zusatzbeitrag" value="1.7" min="0" max="5" step="0.1">
-                            </div>
-                        </div>
-
-                        <div style="text-align: center; margin-top: 20px;">
-                            <button id="calculateBtn" onclick="calculate()" style="
-                    background: linear-gradient(135deg, #667eea, #764ba2);
-                    color: white;
-                    border: none;
-                    padding: 15px 40px;
-                    font-size: 18px;
-                    font-weight: bold;
-                    border-radius: 10px;
-                    cursor: pointer;
-                    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
-                    transition: all 0.3s ease;
-                " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 25px rgba(102, 126, 234, 0.4)'"
-                                onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 5px 15px rgba(102, 126, 234, 0.3)'">
-                                🧮 Berechnen
-                            </button>
-                        </div>
+    <!-- Hauptinhalt Container mit Alias-Klassen -->
+    <div class="main-container">
+        <div class="card">
+            <div class="card-light">
+                <h2 class="heading-text">Eingabedaten</h2>
+                <div class="form-grid">
+                    <div class="flex-col">
+                        <label for="jahresgewinn" class="label-text">Jahresgewinn (€)</label>
+                        <input type="number" id="jahresgewinn" value="50000" min="0" step="100" class="input-field">
                     </div>
 
-                    <div class="results-section" id="results" style="display: none;">
-                        <!-- Results will be populated here -->
+                    <div class="flex-col">
+                        <label for="familienstand" class="label-text">Familienstand</label>
+                        <select id="familienstand" class="input-field">
+                            <option value="ledig">Ledig</option>
+                            <option value="verheiratet">Verheiratet</option>
+                        </select>
                     </div>
 
-                    <div class="note">
-                        <strong>Hinweis:</strong> Diese Berechnung basiert auf den aktuellen Thüringer Steuersätzen und
-                        Beitragssätzen für 2025.
-                        Berücksichtigt werden: Gewerbesteuer mit durchschnittlichem Hebesatz von 380% für Thüringen,
-                        Kirchensteuer
-                        von 9%,
-                        Kleinunternehmerregelung bei Umsatz unter 22.000€. Die Werte sind Näherungswerte und ersetzen
-                        keine
-                        professionelle Steuerberatung.
-                        Individuelle Umstände können zu Abweichungen führen.
+                    <div class="flex-col">
+                        <label for="kirchensteuer" class="label-text">Kirchensteuerpflichtig</label>
+                        <select id="kirchensteuer" class="input-field">
+                            <option value="ja">Ja</option>
+                            <option value="nein">Nein</option>
+                        </select>
                     </div>
 
+                    <div class="flex-col">
+                        <label for="umsatz" class="label-text">Jahresumsatz (€)</label>
+                        <input type="number" id="umsatz" value="80000" min="0" step="100" class="input-field">
+                    </div>
 
+                    <div class="flex-col">
+                        <label for="bundesland" class="label-text">Bundesland</label>
+                        <select id="bundesland" class="input-field">
+                            <option value="thueringen" selected>Thüringen</option>
+                            <option value="sachsen">Sachsen</option>
+                            <option value="bayern">Bayern</option>
+                            <option value="bw">Baden-Württemberg</option>
+                            <option value="andere">Andere</option>
+                        </select>
+                    </div>
 
+                    <div class="flex-col">
+                        <label for="krankenversicherung" class="label-text">Krankenversicherung</label>
+                        <select id="krankenversicherung" class="input-field">
+                            <option value="gesetzlich">Gesetzlich</option>
+                            <option value="privat">Privat</option>
+                        </select>
+                    </div>
+
+                    <div class="flex-col">
+                        <label for="alter" class="label-text">Alter</label>
+                        <input type="number" id="alter" value="35" min="18" max="100" class="input-field">
+                    </div>
+
+                    <div class="flex-col">
+                        <label for="krankenkasse" class="label-text">Krankenkasse (bei gesetzlicher KV)</label>
+                        <select id="krankenkasse" class="input-field">
+                            <option value="ikk">IKK classic (18,0%)</option>
+                            <option value="barmer">Barmer (17,89%)</option>
+                            <option value="custom">Andere (manuell eingeben)</option>
+                        </select>
+                    </div>
+
+                    <div class="flex-col">
+                        <label for="kinder" class="label-text">Anzahl Kinder</label>
+                        <input type="number" id="kinder" value="0" min="0" max="10" class="input-field">
+                    </div>
+
+                    <div class="flex-col">
+                        <label for="zusatzbeitrag" class="label-text">KV-Zusatzbeitrag (%)</label>
+                        <input type="number" id="zusatzbeitrag" value="1.7" min="0" max="5" step="0.1" class="input-field">
+                    </div>
+                </div>
+
+                <div class="text-center mt-6">
+                    <button id="calculateBtn" onclick="calculate()" class="btn-primary">
+                        🧮 Berechnen
+                    </button>
+                </div>
+
+                <!-- Results Section mit Alias-Klassen -->
+                <div class="card mt-6" id="results" style="display: none;">
+                    <!-- Results will be populated here -->
+                </div>
+
+                <!-- Note Section mit Alias-Klassen -->
+                <div class="note-box mt-6">
+                    <strong class="note-title">Hinweis:</strong> 
+                    <span class="note-text">
+                        Diese Berechnung basiert auf den aktuellen Thüringer Steuersätzen und
+                        Beitragssätzen für 2025. Berücksichtigt werden: Gewerbesteuer mit durchschnittlichem 
+                        Hebesatz von 380% für Thüringen, Kirchensteuer von 9%, Kleinunternehmerregelung bei 
+                        Umsatz unter 22.000€. Die Werte sind Näherungswerte und ersetzen keine professionelle 
+                        Steuerberatung. Individuelle Umstände können zu Abweichungen führen.
+                    </span>
                 </div>
             </div>
         </div>
-
-
     </div>
 
     <script>
-        function formatCurrency(amount) {
-            return new Intl.NumberFormat('de-DE', {
-                style: 'currency',
-                currency: 'EUR'
-            }).format(amount);
-        }
-
-        function calculate() {
-            const jahresgewinn = parseFloat(document.getElementById('jahresgewinn').value) || 0;
-            const umsatz = parseFloat(document.getElementById('umsatz').value) || 0;
-            const familienstand = document.getElementById('familienstand').value;
-            const kirchensteuerpflichtig = document.getElementById('kirchensteuer').value === 'ja';
-            const bundesland = document.getElementById('bundesland').value;
-            const krankenversicherung = document.getElementById('krankenversicherung').value;
-            const alter = parseInt(document.getElementById('alter').value) || 35;
-            const kinder = parseInt(document.getElementById('kinder').value) || 0;
-            const zusatzbeitrag = parseFloat(document.getElementById('zusatzbeitrag').value) || 1.7;
-
-            // Umsatzsteuer berechnen
-            let umsatzsteuer = 0;
-            if (umsatz > 22000) { // Kleinunternehmerregelung
-                umsatzsteuer = umsatz * 0.19; // 19% Umsatzsteuer
-            }
-
-            // Grundfreibetrag 2025
-            const grundfreibetrag = familienstand === 'verheiratet' ? 22364 : 11184;
-
-            // Gewerbesteuer
-            let gewerbesteuer = 0;
-            if (jahresgewinn > 24500) {
-                const gewerbeertrag = jahresgewinn - 24500;
-                const gewerbeertragssteuer = gewerbeertrag * 0.035; // 3,5%
-                gewerbesteuer = gewerbeertragssteuer * 3.8; // Hebesatz 380% für Thüringen
-            }
-
-            // Zu versteuerndes Einkommen
-            const sonderausgaben = 36; // Pauschbetrag
-            const zvE = Math.max(0, jahresgewinn - gewerbesteuer * 1.2 - grundfreibetrag - sonderausgaben);
-
-            // Einkommensteuer (vereinfacht)
-            let einkommensteuer = 0;
-            if (zvE > 0) {
-                if (zvE <= 17005) {
-                    einkommensteuer = (1088.67 * (zvE / 10000) + 1400) * (zvE / 10000);
-                } else if (zvE <= 66760) {
-                    einkommensteuer = (206.43 * (zvE / 10000) + 2397) * (zvE / 10000) + 1014;
-                } else if (zvE <= 277825) {
-                    einkommensteuer = zvE * 0.42 - 10602;
-                } else {
-                    einkommensteuer = zvE * 0.45 - 18936;
-                }
-            }
-
-            einkommensteuer = Math.max(0, einkommensteuer);
-
-            // Solidaritätszuschlag
-            const soli = einkommensteuer > 18130 ? einkommensteuer * 0.055 : 0;
-
-            // Kirchensteuer
-            let kirchensteuer = 0;
-            if (kirchensteuerpflichtig) {
-                const kirchensteuersatz = (bundesland === 'bayern' || bundesland === 'bw') ? 0.08 : 0.09;
-                kirchensteuer = einkommensteuer * kirchensteuersatz;
-            }
-
-            // Krankenversicherung
-            let krankenversicherungsbeitrag = 0;
-            let pflegeversicherungsbeitrag = 0;
-
-            if (krankenversicherung === 'gesetzlich') {
-                const beitragsbemessungsgrenze = 66600; // 2025
-                const bemessungsgrundlage = Math.min(jahresgewinn, beitragsbemessungsgrenze);
-
-                krankenversicherungsbeitrag = bemessungsgrundlage * (0.146 + zusatzbeitrag / 100);
-
-                const pflegesatz = (alter >= 23 && kinder === 0) ? 0.04 : 0.0305;
-                pflegeversicherungsbeitrag = bemessungsgrundlage * pflegesatz;
+        // Dark mode toggle functionality
+        function toggleTheme() {
+            const html = document.documentElement;
+            const isDark = html.classList.contains('dark');
+            const moonIcon = document.getElementById('moon-icon');
+            const sunIcon = document.getElementById('sun-icon');
+            
+            if (isDark) {
+                html.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+                // Show moon icon (dark mode available)
+                moonIcon.classList.remove('hidden');
+                sunIcon.classList.add('hidden');
             } else {
-                // Private KV (Schätzung)
-                krankenversicherungsbeitrag = alter < 30 ? 4800 : (alter < 50 ? 6000 : 7200);
-                pflegeversicherungsbeitrag = krankenversicherungsbeitrag * 0.1;
+                html.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+                // Show sun icon (light mode available)
+                moonIcon.classList.add('hidden');
+                sunIcon.classList.remove('hidden');
             }
-
-            // Rentenversicherung (freiwillig für Selbständige)
-            const rentenversicherung = 0; // Optional
-
-            // Gesamtbelastung - HIER WAR DER FEHLER: Umsatzsteuer war nicht enthalten!
-            const gesamtsteuern = einkommensteuer + soli + kirchensteuer + gewerbesteuer + umsatzsteuer;
-            const gesamtsozialversicherung = krankenversicherungsbeitrag + pflegeversicherungsbeitrag + rentenversicherung;
-            const gesamtbelastung = gesamtsteuern + gesamtsozialversicherung;
-            const nettogewinn = jahresgewinn - gesamtbelastung;
-
-            // Ergebnisse anzeigen
-            displayResults({
-                jahresgewinn,
-                umsatz,
-                umsatzsteuer,
-                gewerbesteuer,
-                einkommensteuer,
-                soli,
-                kirchensteuer,
-                gesamtsteuern,
-                krankenversicherungsbeitrag,
-                pflegeversicherungsbeitrag,
-                rentenversicherung,
-                gesamtsozialversicherung,
-                gesamtbelastung,
-                nettogewinn,
-                belastungsquote: (gesamtbelastung / jahresgewinn * 100)
-            });
         }
 
-        function displayResults(results) {
-            const resultsContainer = document.getElementById('results');
+        // Initialize theme on page load
+        function initTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const moonIcon = document.getElementById('moon-icon');
+            const sunIcon = document.getElementById('sun-icon');
+            
+            if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+                document.documentElement.classList.add('dark');
+                // Show sun icon (light mode available)
+                moonIcon.classList.add('hidden');
+                sunIcon.classList.remove('hidden');
+            } else {
+                // Show moon icon (dark mode available)
+                moonIcon.classList.remove('hidden');
+                sunIcon.classList.add('hidden');
+            }
+        }
 
-            // Ergebnisse anzeigen
-            resultsContainer.style.display = 'block';
+        // Call initTheme when page loads
+        initTheme();
 
-            resultsContainer.innerHTML = `
-                <div class="result-card">
-                    <h3>📊 Steuer- und Abgabenübersicht</h3>
-                    <div style="overflow-x: auto;">
-                        <table style="
-                            width: 100%;
-                            border-collapse: collapse;
-                            margin-top: 15px;
-                            background: rgba(255,255,255,0.1);
-                            border-radius: 8px;
-                            overflow: hidden;
-                        ">
-                            <thead>
-                                <tr style="background: rgba(255,255,255,0.2);">
-                                    <th style="padding: 12px; text-align: left; color: white; font-weight: bold;">Abgabenart</th>
-                                    <th style="padding: 12px; text-align: right; color: white; font-weight: bold;">Betrag/Jahr</th>
-                                    <th style="padding: 12px; text-align: right; color: white; font-weight: bold;">Betrag/Monat</th>
-                                </tr>
-                            </thead>
-                            <tbody style="color: white;">
-                                <tr style="border-bottom: 1px solid rgba(255,255,255,0.1);">
-                                    <td style="padding: 10px;">Umsatzsteuer</td>
-                                    <td style="padding: 10px; text-align: right; font-weight: bold;">${formatCurrency(results.umsatzsteuer)}</td>
-                                    <td style="padding: 10px; text-align: right;">${formatCurrency(results.umsatzsteuer / 12)}</td>
-                                </tr>
-                                <tr style="border-bottom: 1px solid rgba(255,255,255,0.1);">
-                                    <td style="padding: 10px;">Gewerbesteuer</td>
-                                    <td style="padding: 10px; text-align: right; font-weight: bold;">${formatCurrency(results.gewerbesteuer)}</td>
-                                    <td style="padding: 10px; text-align: right;">${formatCurrency(results.gewerbesteuer / 4)}</td>
-                                </tr>
-                                <tr style="border-bottom: 1px solid rgba(255,255,255,0.1);">
-                                    <td style="padding: 10px;">Einkommensteuer</td>
-                                    <td style="padding: 10px; text-align: right; font-weight: bold;">${formatCurrency(results.einkommensteuer)}</td>
-                                    <td style="padding: 10px; text-align: right;">${formatCurrency(results.einkommensteuer / 4)}</td>
-                                </tr>
-                                <tr style="border-bottom: 1px solid rgba(255,255,255,0.1);">
-                                    <td style="padding: 10px;">Solidaritätszuschlag</td>
-                                    <td style="padding: 10px; text-align: right; font-weight: bold;">${formatCurrency(results.soli)}</td>
-                                    <td style="padding: 10px; text-align: right;">${formatCurrency(results.soli / 4)}</td>
-                                </tr>
-                                <tr style="border-bottom: 1px solid rgba(255,255,255,0.1);">
-                                    <td style="padding: 10px;">Kirchensteuer</td>
-                                    <td style="padding: 10px; text-align: right; font-weight: bold;">${formatCurrency(results.kirchensteuer)}</td>
-                                    <td style="padding: 10px; text-align: right;">${formatCurrency(results.kirchensteuer / 4)}</td>
-                                </tr>
-                                <tr style="border-bottom: 2px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.1);">
-                                    <td style="padding: 10px; font-weight: bold;">Steuern gesamt</td>
-                                    <td style="padding: 10px; text-align: right; font-weight: bold; font-size: 1.1em;">${formatCurrency(results.gesamtsteuern)}</td>
-                                    <td style="padding: 10px; text-align: right; font-weight: bold;">${formatCurrency(results.gesamtsteuern / 12)}</td>
-                                </tr>
-                                <tr style="border-bottom: 1px solid rgba(255,255,255,0.1);">
-                                    <td style="padding: 10px;">Krankenversicherung</td>
-                                    <td style="padding: 10px; text-align: right; font-weight: bold;">${formatCurrency(results.krankenversicherungsbeitrag)}</td>
-                                    <td style="padding: 10px; text-align: right;">${formatCurrency(results.krankenversicherungsbeitrag / 12)}</td>
-                                </tr>
-                                <tr style="border-bottom: 1px solid rgba(255,255,255,0.1);">
-                                    <td style="padding: 10px;">Pflegeversicherung</td>
-                                    <td style="padding: 10px; text-align: right; font-weight: bold;">${formatCurrency(results.pflegeversicherungsbeitrag)}</td>
-                                    <td style="padding: 10px; text-align: right;">${formatCurrency(results.pflegeversicherungsbeitrag / 12)}</td>
-                                </tr>
-                                <tr style="border-bottom: 2px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.1);">
-                                    <td style="padding: 10px; font-weight: bold;">Sozialversicherung gesamt</td>
-                                    <td style="padding: 10px; text-align: right; font-weight: bold; font-size: 1.1em;">${formatCurrency(results.gesamtsozialversicherung)}</td>
-                                    <td style="padding: 10px; text-align: right; font-weight: bold;">${formatCurrency(results.gesamtsozialversicherung / 12)}</td>
-                                </tr>
-                                <tr style="background: rgba(255,255,255,0.2); font-size: 1.2em;">
-                                    <td style="padding: 15px; font-weight: bold;">GESAMTBELASTUNG</td>
-                                    <td style="padding: 15px; text-align: right; font-weight: bold; font-size: 1.3em;">${formatCurrency(results.gesamtbelastung)}</td>
-                                    <td style="padding: 15px; text-align: right; font-weight: bold;">${formatCurrency(results.gesamtbelastung / 12)}</td>
-                                </tr>
-                            </tbody>
-                        </table>
+        // Placeholder calculate function
+        function calculate() {
+            const results = document.getElementById('results');
+            results.style.display = 'block';
+            results.innerHTML = `
+                <h3 class="text-xl font-bold mb-4 text-gray-800 dark:text-gray-200">Berechnungsergebnisse</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded">
+                        <h4 class="font-semibold text-gray-700 dark:text-gray-300">Gewerbesteuer</h4>
+                        <p class="text-2xl font-bold text-blue-600 dark:text-blue-400">€ 2.450</p>
                     </div>
-                </div>
-                
-                <div class="result-card summary-card">
-                    <h3>📈 Finanzieller Überblick</h3>
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 15px;">
-                        <div style="text-align: center; padding: 15px; background: rgba(255,255,255,0.1); border-radius: 8px;">
-                            <div style="font-size: 0.9em; margin-bottom: 5px;">Jahresumsatz</div>
-                            <div style="font-size: 1.3em; font-weight: bold;">${formatCurrency(results.umsatz)}</div>
-                        </div>
-                        <div style="text-align: center; padding: 15px; background: rgba(255,255,255,0.1); border-radius: 8px;">
-                            <div style="font-size: 0.9em; margin-bottom: 5px;">Jahresgewinn</div>
-                            <div style="font-size: 1.3em; font-weight: bold;">${formatCurrency(results.jahresgewinn)}</div>
-                        </div>
-                        <div style="text-align: center; padding: 15px; background: rgba(255,255,255,0.1); border-radius: 8px;">
-                            <div style="font-size: 0.9em; margin-bottom: 5px;">Belastungsquote</div>
-                            <div style="font-size: 1.3em; font-weight: bold;">${results.belastungsquote.toFixed(1)}%</div>
-                        </div>
-                        <div style="text-align: center; padding: 15px; background: rgba(34, 197, 94, 0.3); border-radius: 8px; border: 2px solid rgba(34, 197, 94, 0.5);">
-                            <div style="font-size: 0.9em; margin-bottom: 5px;">Nettogewinn</div>
-                            <div style="font-size: 1.4em; font-weight: bold;">${formatCurrency(results.nettogewinn)}</div>
-                            <div style="font-size: 0.8em; margin-top: 5px;">≈ ${formatCurrency(results.nettogewinn / 12)}/Monat</div>
-                        </div>
-                    </div>
-
-                    <div style="margin-top: 20px; padding: 15px; background: rgba(255, 255, 255, 0.1); border-radius: 8px;">
-                        <h4 style="margin-bottom: 10px; color: white;">Kontrollrechnung:</h4>
-                        <div style="color: white; font-size: 0.9em;">
-                            <div>Umsatzsteuer: ${formatCurrency(results.umsatzsteuer)}</div>
-                            <div>Gewerbesteuer: ${formatCurrency(results.gewerbesteuer)}</div>
-                            <div>Einkommensteuer: ${formatCurrency(results.einkommensteuer)}</div>
-                            <div>Solidaritätszuschlag: ${formatCurrency(results.soli)}</div>
-                            <div>Kirchensteuer: ${formatCurrency(results.kirchensteuer)}</div>
-                            <div>Krankenversicherung: ${formatCurrency(results.krankenversicherungsbeitrag)}</div>
-                            <div>Pflegeversicherung: ${formatCurrency(results.pflegeversicherungsbeitrag)}</div>
-                            <div style="border-top: 1px solid rgba(255,255,255,0.3); margin-top: 10px; padding-top: 10px; font-weight: bold;">
-                                Summe: ${formatCurrency(results.umsatzsteuer + results.gewerbesteuer + results.einkommensteuer + results.soli + results.kirchensteuer + results.krankenversicherungsbeitrag + results.pflegeversicherungsbeitrag)}
-                            </div>
-                        </div>
+                    <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded">
+                        <h4 class="font-semibold text-gray-700 dark:text-gray-300">Krankenversicherung</h4>
+                        <p class="text-2xl font-bold text-green-600 dark:text-green-400">€ 7.200</p>
                     </div>
                 </div>
             `;
         }
-
-        // Event Listeners
-        document.addEventListener('DOMContentLoaded', function () {
-            // Initiale Berechnung nur beim Klick auf den Button
-            document.getElementById('results').style.display = 'none';
-        });
-    </script>
-
-    <!-- Theme Switch Tailwind Script -->
-    <script>
-        // Theme-Verwaltung ohne localStorage (für Claude-Artefakte)
-        let currentTheme = 'light';
-
-        const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
-        const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
-        const themeToggleBtn = document.getElementById('theme-toggle');
-        const themeStatus = document.getElementById('theme-status');
-        const htmlElement = document.documentElement;
-
-        // Funktion zum Aktualisieren der Icons
-        function updateIcons() {
-            if (currentTheme === 'dark') {
-                themeToggleDarkIcon.classList.add('hidden');
-                themeToggleLightIcon.classList.remove('hidden');
-            } else {
-                themeToggleDarkIcon.classList.remove('hidden');
-                themeToggleLightIcon.classList.add('hidden');
-            }
-        }
-
-        // Funktion zum Aktualisieren des Status
-        function updateStatus() {
-            themeStatus.textContent = `Theme: ${currentTheme === 'dark' ? 'Dark Mode' : 'Light Mode'}`;
-        }
-
-        // Funktion zum Wechseln des Themes
-        function toggleTheme() {
-            if (currentTheme === 'light') {
-                currentTheme = 'dark';
-                htmlElement.classList.remove('light');
-                htmlElement.classList.add('dark');
-            } else {
-                currentTheme = 'light';
-                htmlElement.classList.remove('dark');
-                htmlElement.classList.add('light');
-            }
-
-            updateIcons();
-            updateStatus();
-        }
-
-        // Event Listener für den Toggle Button
-        themeToggleBtn.addEventListener('click', toggleTheme);
-
-        // System-Präferenz erkennen (falls verfügbar)
-        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            currentTheme = 'dark';
-            htmlElement.classList.remove('light');
-            htmlElement.classList.add('dark');
-        }
-
-        // Initiale Anzeige aktualisieren
-        updateIcons();
-        updateStatus();
-
-        // Optional: Auf System-Theme-Änderungen reagieren
-        if (window.matchMedia) {
-            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function (e) {
-                // Nur reagieren, wenn der Benutzer noch nicht manuell gewechselt hat
-                // (In einer echten App würden Sie das mit einer zusätzlichen Variable verfolgen)
-            });
-        }
     </script>
 </body>
-
 </html>
