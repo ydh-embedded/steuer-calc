@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gewerbe Steuer- und Krankenversicherungsrechner</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .input-section {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            transition: all 0.3s ease;
+        }
+        
+        .dark .input-section {
+            background: #1f2937;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        
+        .input-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .form-group label {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #374151;
+            transition: color 0.3s ease;
+        }
+        
+        .dark .form-group label {
+            color: #d1d5db;
+        }
+        
+        .form-group input,
+        .form-group select {
+            padding: 12px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: white;
+        }
+        
+        .dark .form-group input,
+        .dark .form-group select {
+            background: #374151;
+            border-color: #4b5563;
+            color: #f9fafb;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .results-section {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            transition: all 0.3s ease;
+        }
+        
+        .dark .results-section {
+            background: #1f2937;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        
+        .note {
+            background: #f3f4f6;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+            color: #374151;
+            transition: all 0.3s ease;
+        }
+        
+        .dark .note {
+            background: #374151;
+            color: #d1d5db;
+        }
+        
+        h1 {
+            color: #1f2937;
+            transition: color 0.3s ease;
+        }
+        
+        .dark h1 {
+            color: #f9fafb;
+        }
+        
+        h2 {
+            color: #374151;
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            transition: color 0.3s ease;
+        }
+        
+        .dark h2 {
+            color: #f3f4f6;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            transition: all 0.3s ease;
+        }
+        
+        .dark body {
+            background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+        }
+    </style>
+</head>
+<body>
+    <!-- Hauptcontainer mit Dark Theme Klassen -->
+    <div class="container bg-transparent">
+        <div class="header">
+            <h1 class="text-white dark:text-gray-100">📊 Gewerbe Steuer- und Krankenversicherungsrechner</h1>
+            <button class="theme-toggle bg-white/20 hover:bg-white/30 p-3 rounded-lg transition-all duration-300 backdrop-blur-sm" onclick="toggleTheme()" id="themeToggle">
+                <!-- Moon Icon (for light mode - shows when dark mode is available) -->
+                <svg id="moon-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 text-white">
+                    <path fill-rule="evenodd" d="M9.528 1.718a.75.75 0 01.162.819A8.97 8.97 0 009 6a9 9 0 009 9 8.97 8.97 0 003.463-.69.75.75 0 01.981.98 10.503 10.503 0 01-9.694 6.46c-5.799 0-10.5-4.701-10.5-10.5 0-4.368 2.667-8.112 6.46-9.694a.75.75 0 01.818.162z" clip-rule="evenodd" />
+                </svg>
+                
+                <!-- Sun Icon (for dark mode - shows when light mode is available) -->
+                <svg id="sun-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 text-white hidden">
+                    <path d="M12 2.25a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V3a.75.75 0 01.75-.75zM7.5 12a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM18.894 6.166a.75.75 0 00-1.06-1.06l-1.591 1.59a.75.75 0 101.06 1.061l1.591-1.59zM21.75 12a.75.75 0 01-.75.75h-2.25a.75.75 0 010-1.5H21a.75.75 0 01.75.75zM17.834 18.894a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 10-1.061 1.06l1.59 1.591zM12 18a.75.75 0 01.75.75V21a.75.75 0 01-1.5 0v-2.25A.75.75 0 0112 18zM7.758 17.303a.75.75 0 00-1.061-1.06l-1.591 1.59a.75.75 0 001.06 1.061l1.591-1.59zM6 12a.75.75 0 01-.75.75H3a.75.75 0 010-1.5h2.25A.75.75 0 016 12zM6.697 7.757a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 00-1.061 1.06l1.59 1.591z" />
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- Hauptinhalt Container mit Dark Theme Klassen -->
+    <div class="container">
+        <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 p-6 rounded-lg shadow-lg transition-all duration-300">
+            <div class="grid grid-cols-1 gap-6">
+                <!-- Input Section Container mit Dark Theme -->
+                <div class="bg-gray-50 dark:bg-gray-700 p-6 rounded-lg border border-gray-200 dark:border-gray-600 transition-all duration-300">
+                    <div class="input-section bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600">
+                        <h2 class="text-gray-800 dark:text-gray-100">Eingabedaten</h2>
+                        <div class="input-group">
+                            <div class="form-group">
+                                <label for="jahresgewinn" class="text-gray-700 dark:text-gray-300">Jahresgewinn (€)</label>
+                                <input type="number" id="jahresgewinn" value="50000" min="0" step="100" 
+                                       class="bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="familienstand" class="text-gray-700 dark:text-gray-300">Familienstand</label>
+                                <select id="familienstand" class="bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100">
+                                    <option value="ledig">Ledig</option>
+                                    <option value="verheiratet">Verheiratet</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="kirchensteuer" class="text-gray-700 dark:text-gray-300">Kirchensteuerpflichtig</label>
+                                <select id="kirchensteuer" class="bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100">
+                                    <option value="ja">Ja</option>
+                                    <option value="nein">Nein</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="umsatz" class="text-gray-700 dark:text-gray-300">Jahresumsatz (€)</label>
+                                <input type="number" id="umsatz" value="80000" min="0" step="100"
+                                       class="bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="bundesland" class="text-gray-700 dark:text-gray-300">Bundesland</label>
+                                <select id="bundesland" class="bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100">
+                                    <option value="thueringen" selected>Thüringen</option>
+                                    <option value="sachsen">Sachsen</option>
+                                    <option value="bayern">Bayern</option>
+                                    <option value="bw">Baden-Württemberg</option>
+                                    <option value="andere">Andere</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="krankenversicherung" class="text-gray-700 dark:text-gray-300">Krankenversicherung</label>
+                                <select id="krankenversicherung" class="bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100">
+                                    <option value="gesetzlich">Gesetzlich</option>
+                                    <option value="privat">Privat</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="alter" class="text-gray-700 dark:text-gray-300">Alter</label>
+                                <input type="number" id="alter" value="35" min="18" max="100"
+                                       class="bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="krankenkasse" class="text-gray-700 dark:text-gray-300">GKV Krankenkasse</label>
+                                <select id="krankenkasse" class="bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100">
+                                    <option value="ikk">IKK classic (18,0%)</option>
+                                    <option value="barmer">Barmer (17,89%)</option>
+                                    <option value="custom">Andere (manuell eingeben)</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="kinder" class="text-gray-700 dark:text-gray-300">Anzahl Kinder</label>
+                                <input type="number" id="kinder" value="0" min="0" max="10"
+                                       class="bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="zusatzbeitrag" class="text-gray-700 dark:text-gray-300">KV-Zusatzbeitrag (%)</label>
+                                <input type="number" id="zusatzbeitrag" value="1.7" min="0" max="5" step="0.1"
+                                       class="bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100">
+                            </div>
+                        </div>
+
+                        <div class="text-center mt-6">
+                            <button id="calculateBtn" onclick="calculate()" 
+                                    class="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 
+                                           dark:from-blue-600 dark:to-purple-700 dark:hover:from-blue-700 dark:hover:to-purple-800
+                                           text-white font-bold py-4 px-8 rounded-lg shadow-lg hover:shadow-xl 
+                                           transform hover:-translate-y-1 transition-all duration-300">
+                                🧮 Berechnen
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Results Section mit Dark Theme -->
+                    <div class="results-section bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600" 
+                         id="results" style="display: none;">
+                        <!-- Results will be populated here -->
+                    </div>
+
+                    <!-- Note Section mit Dark Theme -->
+                    <div class="note bg-blue-50 dark:bg-gray-700 border-l-4 border-blue-500 dark:border-blue-400 p-4 rounded">
+                        <strong class="text-gray-800 dark:text-gray-200">Hinweis:</strong> 
+                        <span class="text-gray-700 dark:text-gray-300">
+                            Diese Berechnung basiert auf den aktuellen Thüringer Steuersätzen und
+                            Beitragssätzen für 2025. Berücksichtigt werden: Gewerbesteuer mit durchschnittlichem 
+                            Hebesatz von 380% für Thüringen, Kirchensteuer von 9%, Kleinunternehmerregelung bei 
+                            Umsatz unter 22.000€. Die Werte sind Näherungswerte und ersetzen keine professionelle 
+                            Steuerberatung. Individuelle Umstände können zu Abweichungen führen.
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Dark mode toggle functionality
+        function toggleTheme() {
+            const html = document.documentElement;
+            const isDark = html.classList.contains('dark');
+            const moonIcon = document.getElementById('moon-icon');
+            const sunIcon = document.getElementById('sun-icon');
+            
+            if (isDark) {
+                html.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+                // Show moon icon (dark mode available)
+                moonIcon.classList.remove('hidden');
+                sunIcon.classList.add('hidden');
+            } else {
+                html.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+                // Show sun icon (light mode available)
+                moonIcon.classList.add('hidden');
+                sunIcon.classList.remove('hidden');
+            }
+        }
+
+        // Initialize theme on page load
+        function initTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const moonIcon = document.getElementById('moon-icon');
+            const sunIcon = document.getElementById('sun-icon');
+            
+            if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+                document.documentElement.classList.add('dark');
+                // Show sun icon (light mode available)
+                moonIcon.classList.add('hidden');
+                sunIcon.classList.remove('hidden');
+            } else {
+                // Show moon icon (dark mode available)
+                moonIcon.classList.remove('hidden');
+                sunIcon.classList.add('hidden');
+            }
+        }
+
+        // Call initTheme when page loads
+        initTheme();
+
+        // Placeholder calculate function
+        function calculate() {
+            const results = document.getElementById('results');
+            results.style.display = 'block';
+            results.innerHTML = `
+                <h3 class="text-xl font-bold mb-4 text-gray-800 dark:text-gray-200">Berechnungsergebnisse</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded">
+                        <h4 class="font-semibold text-gray-700 dark:text-gray-300">Gewerbesteuer</h4>
+                        <p class="text-2xl font-bold text-blue-600 dark:text-blue-400">€ 2.450</p>
+                    </div>
+                    <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded">
+                        <h4 class="font-semibold text-gray-700 dark:text-gray-300">Krankenversicherung</h4>
+                        <p class="text-2xl font-bold text-green-600 dark:text-green-400">€ 7.200</p>
+                    </div>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>
