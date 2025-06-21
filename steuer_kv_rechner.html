@@ -24,155 +24,108 @@
                     <path d="M233.54 142.23a8..."></path>
                 </svg>
             </button>
+
+            <button id="theme-toggle" type="button"
+                class="text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5 transition-colors duration-200">
+                <!-- Moon Icon (Dark Mode) -->
+                <svg id="theme-toggle-dark-icon" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+                </svg>
+                <!-- Sun Icon (Light Mode) -->
+                <svg id="theme-toggle-light-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                    <path
+                        d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"
+                        fill-rule="evenodd" clip-rule="evenodd"></path>
+                </svg>
+            </button>
+
         </div>
     </div>
 
     <div class="container">
-        <body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-300">
-            <div class="min-h-screen p-8">
-                <!-- Header mit Theme Toggle -->
-                <header class="flex justify-between items-center mb-8">
-                    <h1 class="text-3xl font-bold">Theme Switch Demo</h1>
 
-                    <!-- Theme Toggle Button -->
-                    <button id="theme-toggle" type="button"
-                        class="text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5 transition-colors duration-200">
-                        <!-- Moon Icon (Dark Mode) -->
-                        <svg id="theme-toggle-dark-icon" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
-                        </svg>
-                        <!-- Sun Icon (Light Mode) -->
-                        <svg id="theme-toggle-light-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path
-                                d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"
-                                fill-rule="evenodd" clip-rule="evenodd"></path>
-                        </svg>
-                    </button>
-                </header>
+        <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 p-6 rounded-lg shadow-sm">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="bg-gray-100 dark:bg-gray-700 p-4 rounded">
+                    <h3 class="font-medium mb-2">"bg-gray-100 dark:bg-gray-700 p-4 rounded"</h3>
+                    <p class="text-sm text-gray-600 dark:text-gray-400">"text-sm text-gray-600 dark:text-gray-400"</p>
 
-                <!-- Demo Content -->
-                <main class="space-y-8">
-                    <!-- Card 1 -->
-                    <div class="bg-gray-50 dark:bg-gray-800 p-6 rounded-lg shadow-md">
-                        <h2 class="text-xl font-semibold mb-4">Beispiel Karte 1</h2>
-                        <p class="text-gray-700 dark:text-gray-300">
-                            Diese Karte zeigt, wie der Theme-Switch funktioniert. Der Hintergrund und die Textfarben
-                            ändern sich automatisch je nach gewähltem Theme.
-                        </p>
-                        <button
-                            class="mt-4 bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700 text-white px-4 py-2 rounded transition-colors">
-                            Demo Button
-                        </button>
-                    </div>
 
-                    <!-- Card 2 -->
-                    <div
-                        class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 p-6 rounded-lg shadow-sm">
-                        <h2 class="text-xl font-semibold mb-4">Beispiel Karte 2</h2>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div class="bg-gray-100 dark:bg-gray-700 p-4 rounded">
-                                <h3 class="font-medium mb-2">Feature 1</h3>
-                                <p class="text-sm text-gray-600 dark:text-gray-400">Automatischer Theme-Wechsel</p>
+                    <div class="input-section">
+                        <h2>Eingabedaten</h2>
+                        <div class="input-group">
+                            <div class="form-group">
+                                <label for="jahresgewinn">Jahresgewinn (€)</label>
+                                <input type="number" id="jahresgewinn" value="50000" min="0" step="100">
                             </div>
-                            <div class="bg-gray-100 dark:bg-gray-700 p-4 rounded">
-                                <h3 class="font-medium mb-2">Feature 2</h3>
-                                <p class="text-sm text-gray-600 dark:text-gray-400">Smooth Übergangseffekte</p>
+
+                            <div class="form-group">
+                                <label for="familienstand">Familienstand</label>
+                                <select id="familienstand">
+                                    <option value="ledig">Ledig</option>
+                                    <option value="verheiratet">Verheiratet</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="kirchensteuer">Kirchensteuerpflichtig</label>
+                                <select id="kirchensteuer">
+                                    <option value="ja">Ja</option>
+                                    <option value="nein">Nein</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="umsatz">Jahresumsatz (€)</label>
+                                <input type="number" id="umsatz" value="80000" min="0" step="100">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="bundesland">Bundesland</label>
+                                <select id="bundesland">
+                                    <option value="thueringen" selected>Thüringen</option>
+                                    <option value="sachsen">Sachsen</option>
+                                    <option value="bayern">Bayern</option>
+                                    <option value="bw">Baden-Württemberg</option>
+                                    <option value="andere">Andere</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="krankenversicherung">Krankenversicherung</label>
+                                <select id="krankenversicherung">
+                                    <option value="gesetzlich">Gesetzlich</option>
+                                    <option value="privat">Privat</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="alter">Alter</label>
+                                <input type="number" id="alter" value="35" min="18" max="100">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="krankenkasse">Krankenkasse (bei gesetzlicher KV)</label>
+                                <select id="krankenkasse">
+                                    <option value="ikk">IKK classic (18,0%)</option>
+                                    <option value="barmer">Barmer (17,89%)</option>
+                                    <option value="custom">Andere (manuell eingeben)</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="kinder">Anzahl Kinder</label>
+                                <input type="number" id="kinder" value="0" min="0" max="10">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="zusatzbeitrag">KV-Zusatzbeitrag (%)</label>
+                                <input type="number" id="zusatzbeitrag" value="1.7" min="0" max="5" step="0.1">
                             </div>
                         </div>
-                    </div>
 
-                    <!-- Status Display -->
-                    <div
-                        class="bg-gradient-to-r from-purple-500 to-pink-500 dark:from-purple-600 dark:to-pink-600 p-6 rounded-lg text-white">
-                        <h2 class="text-xl font-semibold mb-2">Aktueller Status</h2>
-                        <p id="theme-status" class="text-lg">Theme: Light Mode</p>
-                    </div>
-                </main>
-            </div>
-
-
-        </body>
-
-        </html>
-    </div>
-    <div class="container">
-        <div class="input-section">
-            <h2>Eingabedaten</h2>
-            <div class="input-group">
-                <div class="form-group">
-                    <label for="jahresgewinn">Jahresgewinn (€)</label>
-                    <input type="number" id="jahresgewinn" value="50000" min="0" step="100">
-                </div>
-
-                <div class="form-group">
-                    <label for="familienstand">Familienstand</label>
-                    <select id="familienstand">
-                        <option value="ledig">Ledig</option>
-                        <option value="verheiratet">Verheiratet</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="kirchensteuer">Kirchensteuerpflichtig</label>
-                    <select id="kirchensteuer">
-                        <option value="ja">Ja</option>
-                        <option value="nein">Nein</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="umsatz">Jahresumsatz (€)</label>
-                    <input type="number" id="umsatz" value="80000" min="0" step="100">
-                </div>
-
-                <div class="form-group">
-                    <label for="bundesland">Bundesland</label>
-                    <select id="bundesland">
-                        <option value="thueringen" selected>Thüringen</option>
-                        <option value="sachsen">Sachsen</option>
-                        <option value="bayern">Bayern</option>
-                        <option value="bw">Baden-Württemberg</option>
-                        <option value="andere">Andere</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="krankenversicherung">Krankenversicherung</label>
-                    <select id="krankenversicherung">
-                        <option value="gesetzlich">Gesetzlich</option>
-                        <option value="privat">Privat</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="alter">Alter</label>
-                    <input type="number" id="alter" value="35" min="18" max="100">
-                </div>
-
-                <div class="form-group">
-                    <label for="krankenkasse">Krankenkasse (bei gesetzlicher KV)</label>
-                    <select id="krankenkasse">
-                        <option value="ikk">IKK classic (18,0%)</option>
-                        <option value="barmer">Barmer (17,89%)</option>
-                        <option value="custom">Andere (manuell eingeben)</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="kinder">Anzahl Kinder</label>
-                    <input type="number" id="kinder" value="0" min="0" max="10">
-                </div>
-
-                <div class="form-group">
-                    <label for="zusatzbeitrag">KV-Zusatzbeitrag (%)</label>
-                    <input type="number" id="zusatzbeitrag" value="1.7" min="0" max="5" step="0.1">
-                </div>
-            </div>
-
-            <div style="text-align: center; margin-top: 20px;">
-                <button id="calculateBtn" onclick="calculate()" style="
+                        <div style="text-align: center; margin-top: 20px;">
+                            <button id="calculateBtn" onclick="calculate()" style="
                     background: linear-gradient(135deg, #667eea, #764ba2);
                     color: white;
                     border: none;
@@ -184,25 +137,35 @@
                     box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
                     transition: all 0.3s ease;
                 " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 25px rgba(102, 126, 234, 0.4)'"
-                    onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 5px 15px rgba(102, 126, 234, 0.3)'">
-                    🧮 Berechnen
-                </button>
+                                onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 5px 15px rgba(102, 126, 234, 0.3)'">
+                                🧮 Berechnen
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="results-section" id="results" style="display: none;">
+                        <!-- Results will be populated here -->
+                    </div>
+
+                    <div class="note">
+                        <strong>Hinweis:</strong> Diese Berechnung basiert auf den aktuellen Thüringer Steuersätzen und
+                        Beitragssätzen für 2025.
+                        Berücksichtigt werden: Gewerbesteuer mit durchschnittlichem Hebesatz von 380% für Thüringen,
+                        Kirchensteuer
+                        von 9%,
+                        Kleinunternehmerregelung bei Umsatz unter 22.000€. Die Werte sind Näherungswerte und ersetzen
+                        keine
+                        professionelle Steuerberatung.
+                        Individuelle Umstände können zu Abweichungen führen.
+                    </div>
+
+
+
+                </div>
             </div>
         </div>
 
-        <div class="results-section" id="results" style="display: none;">
-            <!-- Results will be populated here -->
-        </div>
 
-        <div class="note">
-            <strong>Hinweis:</strong> Diese Berechnung basiert auf den aktuellen Thüringer Steuersätzen und
-            Beitragssätzen für 2025.
-            Berücksichtigt werden: Gewerbesteuer mit durchschnittlichem Hebesatz von 380% für Thüringen, Kirchensteuer
-            von 9%,
-            Kleinunternehmerregelung bei Umsatz unter 22.000€. Die Werte sind Näherungswerte und ersetzen keine
-            professionelle Steuerberatung.
-            Individuelle Umstände können zu Abweichungen führen.
-        </div>
     </div>
 
     <script>
