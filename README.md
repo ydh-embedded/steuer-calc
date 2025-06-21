@@ -1,7 +1,4 @@
 # steuer-calc
 Die wichtigsten Toppics
 
-✅ Umsatz wird jetzt korrekt aus dem Eingabefeld gelesen und weitergegeben
-✅ Umsatzsteuer-Berechnung mit Kleinunternehmerregelung implementiert
-✅ Einkommensteuer wird auf mindestens 0 begrenzt (Math.max(0, einkommensteuer))
-✅ Hebesatz für Thüringen auf 380% korrigiert
+✅ Diese Berechnung basiert auf den aktuellen Thüringer Steuersätzen und Beitragssätzen für 2025. Berücksichtigt werden: Gewerbesteuer mit durchschnittlichem Hebesatz von 380% für Thüringen, Kirchensteuer von 9%, Kleinunternehmerregelung bei Umsatz unter 22.000€.
